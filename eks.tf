@@ -50,7 +50,7 @@ module "ebs_csi_controller_role" {
 resource "aws_iam_policy" "ebs_csi_controller" {
   name_prefix = "ebs-csi-controller"
   description = "EKS ebs-csi-controller policy for cluster ${local.name}-eks-cluster"
-   policy = jsonencode({
+  policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {

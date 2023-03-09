@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /first
+            pathType: Prefix
+            backend:
+              service:
+                name: first
+                port:
+                  name: svc-port
