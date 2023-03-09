@@ -1,22 +1,7 @@
 resource "helm_release" "vault-operator" {
   name       = "vault-operator"
-  repository = "https://kubernetes-charts.banzaicloud.com"
-  chart      = "vault-operator"
-  namespace  = "default"
-}
-
-resource "kubectl_manifest" "rbac" {
-  yaml_body = file("${path.module}/manifests/rbac.yaml")
-  depends_on = [
-    helm_release.vault-operator
-  ]
-}
-
-resource "kubectl_manifest" "cr" {
-  yaml_body = file("${path.module}/manifests/cr.yaml")
-  depends_on = [
-    helm_release.vault-operator
-  ]
+  chart      = "./manifests/vault-operator"
+  depends_on = [module.eks]
 }
 
 resource "kubernetes_namespace" "vault-infra" {
@@ -27,6 +12,7 @@ resource "kubernetes_namespace" "vault-infra" {
     }
     name = "vault-infra"
   }
+  depends_on = [helm_release.vault-operator]
 }
 
 resource "helm_release" "vault-secrets-webhook" {
@@ -34,14 +20,5 @@ resource "helm_release" "vault-secrets-webhook" {
   repository = "https://kubernetes-charts.banzaicloud.com"
   chart      = "vault-secrets-webhook"
   namespace  = "vault-infra"
-  depends_on = [
-    kubernetes_namespace.vault-infra
-  ]
-}
-
-resource "kubectl_manifest" "vault-test" {
-    yaml_body = file("${path.module}/manifests/vault-test.yaml")
-    depends_on = [
-    helm_release.vault-secrets-webhook
-    ]
+  depends_on = [kubernetes_namespace.vault-infra]
 }
