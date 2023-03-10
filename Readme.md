@@ -156,12 +156,12 @@ This section contains information about system components.
 
  * If you can not reach endpoint pls try to update address:
    ```sh
-  external_ip=$(kubectl get svc | grep ingress | awk '{print $4}')
-  kubectl patch ingress default-ingress --type=json -p='[{"op": "replace", "path": "/spec/rules/0/host", "value": "$external_ip"}]'
+    external_ip=$(kubectl get svc | grep ingress | awk '{print $4}')
+    kubectl patch ingress default-ingress --type=json -p='[{"op": "replace", "path": "/spec/rules/0/host", "value": "$external_ip"}]'
    ```
 
-
 # Further Information
+
 
  * https://www.terraform.io/docs/index.html
  * https://docs.aws.amazon.com/
