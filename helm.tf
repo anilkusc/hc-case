@@ -22,3 +22,15 @@ resource "helm_release" "vault-secrets-webhook" {
   namespace  = "vault-infra"
   depends_on = [kubernetes_namespace.vault-infra]
 }
+
+resource "helm_release" "nginx-ingress" {
+  name       = "nginx-ingress"
+  chart      = "./manifests/nginx-ingress"
+  depends_on = [module.eks]
+}
+
+resource "helm_release" "prometheus" {
+  name       = "prometheus"
+  chart      = "./manifests/prometheus"
+  depends_on = [module.eks]
+}

@@ -594,7 +594,7 @@ serverFiles:
     groups:
     - name: memory_alerts
       rules:
-      - alert: high_memory_usage
+      - alert: memory_usage_is_bigger_than_%10
         expr: sum(container_memory_working_set_bytes) by (pod) / sum(kube_pod_container_resource_limits_memory_bytes) by (pod) * 100 > 10
         for: 1m
         labels:
